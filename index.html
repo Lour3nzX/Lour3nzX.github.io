@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeck's Game Blog 🧨</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function scrollAnimateSections() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('scroll-animate');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+    }
+
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: '#0f0c29',
+            light: '#1F2937'
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1F2937;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FACC15;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #fbbf24;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+    .clickable {
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .clickable:active {
+      transform: scale(0.97);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+    section {
+      scroll-margin-top: 100px;
+    }
+    .scroll-animate {
+      animation: slideFade 0.8s ease-out;
+    }
+    @keyframes slideFade {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-dark text-white" onload="scrollAnimateSections()">
+  <header id="hero" class="relative min-h-screen overflow-hidden">
+    <div id="heroSlides" class="absolute inset-0 z-0">
+      <div class="hero-slide absolute inset-0 bg-cover bg-center opacity-100 transition-opacity duration-1000" style="background-image: url('https://i.postimg.cc/xTsSy6KS/Screenshot-2025-01-19-183507.png');"></div>
+      <div class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000" style="background-image: url('https://i.postimg.cc/wvYxNYv0/Screenshot-2025-06-27-151342.png');"></div>
+      <div class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000" style="background-image: url('https://i.postimg.cc/kgBSCH5f/Screenshot-2025-06-13-14-00-38.png');"></div>
+    </div>
+    <nav class="flex justify-between items-center px-10 py-6 relative z-10">
+      <div class="flex items-center gap-8">
+        <h1 class="text-white text-2xl font-bold">Lour. Games</h1>
+      </div>
+      <ul class="hidden md:flex gap-8 text-sm">
+        <li><a href="#hero" class="hover:text-primary">HOME</a></li>
+        <li><a href="#news" class="hover:text-primary">LATEST NEWS</a></li>
+        <li><a href="#blog" class="hover:text-primary">DEV BLOGS</a></li>
+      </ul>
+    </nav>
+    <div class="absolute inset-0 flex flex-col justify-center items-start px-10 md:px-20 text-white z-10">
+      <h2 class="text-4xl md:text-6xl font-extrabold leading-tight">Jeck's <br>Creation<br>Page</h2>
+    </div>
+    <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-dark to-transparent z-10"></div>
+  </header>
+
+  <section id="news" class="py-24 px-6 pt-32 border-t border-gray-700">
+    <h2 class="text-3xl font-bold mb-8">📢 Latest News</h2>
+    <div class="space-y-4">
+      <div class="bg-light p-4 rounded-xl shadow-md">
+        <h3 class="text-xl font-semibold">Pass the Bomb!✨</h3>
+        <p class="text-sm text-gray-400">July 1, 2025</p>
+        <p>New and unfinished project by Jeck. Soon be released to friends when lil bro fixed his problems..</p>
+      </div>
+      <div class="bg-light p-4 rounded-xl shadow-md">
+        <h3 class="text-xl font-semibold">3 Maps Added for Pass the Bomb!💣🗺️</h3>
+        <p class="text-sm text-gray-400">June 28, 2025</p>
+        <p>Rocket Arena, Unknown Building, and Mansion! Check the map images in DEV BLOGS</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="blog" class="py-24 px-6 pt-32 border-t border-gray-700">
+    <h2 class="text-3xl font-bold mb-8">📝 Dev Blogs</h2>
+    <div id="posts" class="space-y-6 mb-8"></div>
+  </section>
+
+  <!-- Fullscreen Image Modal -->
+  <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center hidden z-50" onclick="closeFullImage()">
+    <img id="modalImage" class="max-w-full max-h-full rounded-lg shadow-lg" />
+  </div>
+
+  <script>
+    const posts = [
+      {
+        title: "Abomination...",
+        date: "2025-07-02",
+        body: "The new map btw😂",
+        image: "https://i.postimg.cc/vTzfxBH7/Screenshot-2025-06-30-154118.png"
+      },
+      {
+        title: "🧠 Dev Thoughts #1",
+        date: "2025-06-30",
+        body: "Balancing the game is hard fr. But we're listening to the feedback from the Discord. Keep it coming!"
+      },
+      {
+        title: "TIMING SCRIPTING HELL😱",
+        date: "2025-06-27",
+        body: "bro idk whats up with this script lmao sybau💔🪫😭",
+        image: "https://i.postimg.cc/gjxV6pQn/Screenshot-2025-06-11-214022.png"
+      },
+      {
+        title: "helo",
+        date: "2025-06-27",
+        body: "amog",
+        image: "https://i.postimg.cc/gjxV6pQn/Screenshot-2025-06-11-214022.png"
+      }
+    ];
+
+    const postsDiv = document.getElementById("posts");
+
+    function renderPosts() {
+      postsDiv.innerHTML = "";
+      posts.slice().reverse().forEach(post => {
+        const postEl = document.createElement("div");
+        postEl.className = "bg-light p-5 rounded-xl shadow-md";
+        postEl.innerHTML = `
+          <h3 class="text-2xl font-semibold mb-2">${post.title}</h3>
+          <p class="text-sm text-gray-400 mb-2">${new Date(post.date).toDateString()}</p>
+          ${post.image ? `
+            <div class="relative">
+              <img src="${post.image}" alt="Post image" class="w-full h-[28rem] object-cover object-center rounded-none mb-2">
+              <img src="https://i.postimg.cc/PJrLRvDC/full-screen-38.png" class="w-8 h-8 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('${post.image}')">
+            </div>
+          ` : ''}
+          <p class="text-base leading-relaxed mt-4">${post.body}</p>
+        `;
+        postsDiv.appendChild(postEl);
+      });
+    }
+
+    renderPosts();
+
+    function openFullImage(url) {
+      const modal = document.getElementById("imageModal");
+      const img = document.getElementById("modalImage");
+      img.src = url;
+      modal.classList.remove("hidden");
+    }
+
+    function closeFullImage() {
+      const modal = document.getElementById("imageModal");
+      modal.classList.add("hidden");
+    }
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") {
+        closeFullImage();
+      }
+    });
+
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    let current = 0;
+    setInterval(() => {
+      heroSlides.forEach((slide, index) => {
+        slide.style.opacity = index === current ? '1' : '0';
+      });
+      current = (current + 1) % heroSlides.length;
+    }, 5000);
+  </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=SJDHFOIEGHDFGDG/lour-gmes-website" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>

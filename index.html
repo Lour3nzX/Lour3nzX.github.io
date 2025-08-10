@@ -25,11 +25,13 @@
       // Toggle mobile nav menu
       const menuBtn = document.getElementById("menuBtn");
       const nav = document.getElementById("navLinks");
+
       if (menuBtn && nav) {
         menuBtn.addEventListener("click", () => {
           nav.classList.toggle("hidden");
         });
       }
+
       // Close nav menu after clicking a link on mobile
       document.querySelectorAll("#navLinks a").forEach(link => {
         link.addEventListener("click", () => {
@@ -40,7 +42,7 @@
       });
     });
   </script>
-<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=SJDHFOIEGHDFGDG/lour-gmes-website" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</body>
 
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
@@ -431,6 +433,7 @@
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
     }, 5000);
+
     // Scroll fade
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver(entries => {
@@ -439,6 +442,7 @@
       });
     }, { threshold: 0.2 });
     sections.forEach(s => observer.observe(s));
+
     // ✅ Fullscreen modal logic (fixed)
     function openFullImage(src) {
       const modal = document.getElementById("imageModal");
@@ -447,19 +451,23 @@
       modal.classList.remove("hidden");
       modal.classList.add("flex");
     }
+
     function closeFullImage() {
       const modal = document.getElementById("imageModal");
       modal.classList.add("hidden");
       modal.classList.remove("flex");
     }
+
     document.addEventListener("keydown", e => {
       if (e.key === "Escape") closeFullImage();
     });
+
 // Mobile menu toggle
 document.getElementById("menuBtn").addEventListener("click", () => {
   const nav = document.getElementById("navLinks");
   nav.classList.toggle("hidden");
 });
+
 // Close mobile nav when clicking a link
 document.querySelectorAll("#navLinks a").forEach(link => {
   link.addEventListener("click", () => {
@@ -468,11 +476,15 @@ document.querySelectorAll("#navLinks a").forEach(link => {
     }
   });
 });
+
   // Load More Blog Posts
 document.getElementById("loadMoreBtn").addEventListener("click", () => {
   const hiddenPosts = document.querySelectorAll("#blogPosts .hidden");
   hiddenPosts.forEach(post => post.classList.remove("hidden"));
   document.getElementById("loadMoreBtn").classList.add("hidden");
 });
+
+
+
   </script>
 </html>

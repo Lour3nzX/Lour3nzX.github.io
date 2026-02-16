@@ -1,495 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lour. Games Page</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            dark: '#0f0f0f',
-            darker: '#050505',
-            white: '#ffffff'
-          },
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>JECK YT Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    html { scroll-behavior: smooth; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #050505;
+      background: radial-gradient(circle at top, #111 0%, #000 100%);
       color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .glass {
-      background: rgba(255, 255, 255, 0.03);
+
+    header {
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      padding: 80px 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+    }
+
+    .card {
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(20px);
-    }
-    section { scroll-margin-top: 80px; opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
-    section.visible { opacity: 1; transform: translateY(0); }
-    .nav-link { font-weight: 600; color: white; padding: 0.5rem 1rem; }
-    .nav-link:hover { color: #ccc; }
-    .header-slide {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background-size: cover; background-position: center;
-      opacity: 0; transition: opacity 1.5s ease-in-out;
-    }
-    .header-slide.active { opacity: 1; z-index: 0; }
-    ::-webkit-scrollbar { width: 10px; }
-    ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.6); }
-    
-    /* Mobile menu transitions */
-    #navLinks {
+      border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.3s ease;
-      max-height: 0;
-      overflow: hidden;
     }
-    
-    #navLinks.mobile-open {
-      max-height: 500px;
+
+    .card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.08);
     }
-    
-    @media (min-width: 768px) {
-      #navLinks {
-        max-height: none !important;
-      }
+
+    .stat-number {
+      font-size: 40px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .glow {
+      position: fixed;
+      right: -200px;
+      bottom: -200px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+      filter: blur(120px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      opacity: 0.5;
     }
   </style>
 </head>
+
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="w-full fixed top-0 left-0 z-50 glass px-6 py-4 flex justify-between items-center">
-    <div class="text-xl font-bold">Lour. Games</div>
-    <button id="menuBtn" class="md:hidden text-2xl focus:outline-none">☰</button>
-    <div id="navLinks" class="hidden md:flex gap-6 flex-col md:flex-row absolute md:static top-16 left-0 w-full md:w-auto bg-black/90 md:bg-transparent px-4 md:px-0">
-      <a class="nav-link block text-center py-3 md:py-0" href="#home">Home</a>
-      <a class="nav-link block text-center py-3 md:py-0" href="#about">About</a>
-      <a class="nav-link block text-center py-3 md:py-0" href="#projects">Projects</a>
-      <a class="nav-link block text-center py-3 md:py-0" href="#blog">Dev Blog</a>
-    </div>
-  </nav>
+  <div class="glow"></div>
 
-  <!-- HOME -->
-  <header id="home" class="relative min-h-screen overflow-hidden pt-16">
-    <div class="header-slide active" style="background-image: url('https://i.postimg.cc/xTsSy6KS/Screenshot-2025-01-19-183507.png');"></div>
-    <div class="header-slide" style="background-image: url('https://i.postimg.cc/PrZKyk8p/Screenshot-2025-06-13-14-00-38.png');"></div>
-    <div class="header-slide" style="background-image: url('https://i.postimg.cc/Pr9Hw2wZ/Screenshot-2025-07-28-155334.png');"></div>
-    <div class="absolute left-4 right-4 md:left-10 top-1/2 transform -translate-y-1/2 glass p-6 rounded-xl max-w-full md:max-w-xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-4">Jeck's<br>Game Page</h1>
-      <p class="text-base md:text-lg text-white/80">Welcome! to Lour. Games official Page!✨</p>
-    </div>
-    <div class="absolute bottom-0 w-full h-32 bg-gradient-to-t from-black to-transparent"></div>
+  <header>
+    <div class="logo">JECK YT STATS</div>
   </header>
 
-  <!-- Rest of your content remains the same -->
-  <!-- ABOUT -->
- <section id="about" class="min-h-screen px-6 md:px-12 py-20 md:py-32 glass flex flex-col md:flex-row items-center gap-8 md:gap-12">
-  <!-- TEXT SIDE -->
-  <div class="max-w-2xl">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">About</h2>
-    <p class="text-white/80 text-base md:text-lg">
-      HEYYY there! Lour. Games is a new and small Roblox developing group by Jeck (Lour3nzX)
-      Here you can find Jeck's Roblox simple creations
-      using Roblox Studio!
-    </p>
-  </div>
+  <section class="container">
 
-  <!-- IMAGE SIDE -->
-  <div class="w-full md:w-[30rem]">
-    <img
-      src="https://i.postimg.cc/qvyk8NvW/Screenshot-2025-06-13-13-43-49-1.jpg"
-      alt="About Screenshot"
-      class="rounded-xl shadow-lg object-cover w-full max-h-[400px]"
-    />
-  </div>
-</section>
-
-  <!-- PROJECTS -->
-<section id="projects" class="min-h-screen px-6 md:px-12 py-20 md:py-32 glass flex flex-col md:flex-row items-center gap-8 md:gap-12">
-  <!-- TEXT SIDE -->
-  <div class="max-w-2xl">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">Projects</h2>
-    <p class="text-white/80 text-base md:text-lg">
-      Office Rooms! Creepy and mysterious office hallways inspired by DOORS by LSplash. 
-    </p>
-  </div>
-
-  <!-- IMAGE SIDE -->
-  <div class="w-full md:w-[30rem]">
-    <img
-      src="https://i.postimg.cc/J0XDWGwd/Untitled-Project-5.jpg"
-      class="rounded-xl shadow-lg object-cover w-full max-h-[400px]"
-    />
-  </div>
-</section>
-
- <!-- BLOG -->
-
-<section id="blog" class="min-h-screen px-6 md:px-12 py-20 md:py-32 glass">
-  <div class="max-w-4xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-bold mb-12">📝 Dev Blog Posts</h2>
-    <div id="blogPosts" class="space-y-10">
-
-<!-- BLOG POST 3 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Office Rooms - Finnal Stage??.</h3>
-        <p class="text-sm text-gray-400 mb-2">August 9, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/cCWZrHgz/Screenshot-2025-08-06-153838.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/cCWZrHgz/Screenshot-2025-08-06-153838.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">It is the end but, im not yet finnish from my work (cool)</p>
-      </div>
-
-      <!-- BLOG POST 3 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Office Rooms - Room 100</h3>
-        <p class="text-sm text-gray-400 mb-2">August 8, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/mZjpZQ5G/Screenshot-2025-07-26-115407.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/mZjpZQ5G/Screenshot-2025-07-26-115407.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Just like from the last image</p>
-      </div>
-
-      <!-- BLOG POST 3 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Office Rooms - ?</h3>
-        <p class="text-sm text-gray-400 mb-2">August 7, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/RVC8wPHF/Screenshot-2025-08-05-183635.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/RVC8wPHF/Screenshot-2025-08-05-183635.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">i think...</p>
-      </div>
-
-<!-- BLOG POST 3 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Office Rooms</h3>
-        <p class="text-sm text-gray-400 mb-2">August 7, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/k4rz8qQ3/Screenshot-2025-07-29-104408.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/k4rz8qQ3/Screenshot-2025-07-29-104408.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">A Doors based Game But instead its an Office!</p>
-      </div>
-
-      <!-- BLOG POST 1 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Abomination Map 👹</h3>
-        <p class="text-sm text-gray-400 mb-2">July 3, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/vTzfxBH7/Screenshot-2025-06-30-154118.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/vTzfxBH7/Screenshot-2025-06-30-154118.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">This map is so cursed I almost deleted the whole project 💀</p>
-      </div>
-
-
-      <!-- BLOG POST 2 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Timing Script Hell 😭</h3>
-        <p class="text-sm text-gray-400 mb-2">June 28, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/gjxV6pQn/Screenshot-2025-06-11-214022.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/gjxV6pQn/Screenshot-2025-06-11-214022.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Bro idk howto fix ts script bruh... this is the one making my game broke💔</p>
-      </div>
-
-      <!-- BLOG POST 3 -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">3 New Maps Added 🗺️</h3>
-        <p class="text-sm text-gray-400 mb-2">June 25, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/wvYxNYv0/Screenshot-2025-06-27-151342.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/wvYxNYv0/Screenshot-2025-06-27-151342.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Rocket Arena, Unknown Building, and Mansion are live. Each one more chaotic than the last 💣🔥</p>
-      </div>
-
-      <!-- BLOG POST 4 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Pass the Bomb Unknown Building💀</h3>
-        <p class="text-sm text-gray-400 mb-2">June 28, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/SKrbr5zp/Screenshot-2025-06-30-153607.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/SKrbr5zp/Screenshot-2025-06-30-153607.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Unknown Building map! One of the 3 maps are added</p>
-      </div>
-
-      <!-- BLOG POST 5 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Pass the Bomb Mansion Map (PRE-MADE)🏠</h3>
-        <p class="text-sm text-gray-400 mb-2">June 30, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/CKgzT0Ln/Screenshot-2025-06-30-185741.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Mansion map! One of the 3 maps are added</p>
-      </div>
-
-<!-- BLOG POST 6 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">[Troll]Ascending Tower🤚</h3>
-        <p class="text-sm text-gray-400 mb-2">June 12, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/tJ0cDBzb/Screenshot-2025-06-13-13-47-03.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">My very first obby tower game! based on slaptowers, slap tower, and troll towers!
-        GAME LINK🔗: https://www.roblox.com/games/82895110056967/Troll-Ascending-Tower</p>
-      </div>
-
-      <!-- BLOG POST 8 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Ancient Landscape? (Ancient Isle 2)</h3>
-        <p class="text-sm text-gray-400 mb-2">June 2, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/RCTf14z0/Screenshot-2025-04-12-175301.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Idk if i talked about this but... I think we're getting Ancient landscape and i planed this several months ago and i also dont know if this will be continued or not...</p>
-      </div>
-
-      <!-- BLOG POST 7 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">W obby tower fr💯</h3>
-        <p class="text-sm text-gray-400 mb-2">June 12, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/Qdr4yjyW/Screenshot-2025-06-13-13-47-58.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">This is the whole tower rn</p>
-      </div>
-
-<!-- BLOG POST 8 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">I recreate this on one of my old creations lolol</h3>
-        <p class="text-sm text-gray-400 mb-2">May 7, 2024</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/wv8xZyDd/Screenshot-2025-04-07-203016.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">ts aint tuff💔🪫</p>
-      </div>
-
-<!-- BLOG POST 5 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Your Vriend Npc (yes i spelled that right)</h3>
-        <p class="text-sm text-gray-400 mb-2">March 23, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/5tkLC3cS/Screenshot-2025-03-23-123125.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">its a lil dude that kinda acts like an ai (he is still broken)</p>
-      </div>
-
-<!-- BLOG POST 8 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">My Pool Rooms</h3>
-        <p class="text-sm text-gray-400 mb-2">February 6, 2024</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/fyVHdLgJ/Screenshot-2025-02-09-125801.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">this looks good tbh</p>
-      </div>
-
-<!-- BLOG POST 8 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Backrooms but its POOL ROOMS</h3>
-        <p class="text-sm text-gray-400 mb-2">February 4, 2024</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/GpP63HZR/Screenshot-2025-02-09-174110.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Another poolrooms pic</p>
-      </div>
-
-      <!-- BLOG POST 6 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Btton!</h3>
-        <p class="text-sm text-gray-400 mb-2">February 3, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/yxWVSmHc/Screenshot-2025-02-20-100223.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">I just made a game about chasing a BTTON or a button well i think its kinda fun!</p>
-      </div>
-
-<!-- BLOG POST 8 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">Freedy.</h3>
-        <p class="text-sm text-gray-400 mb-2">February 2, 2024</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/y81LhvGM/Screenshot-2025-02-03-101117.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">A simple horror game i made! (sorry i dont have much screenshots)</p>
-      </div>
-
-       <!-- BLOG POST 5 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">ANCIENT ISLE! my first relaxing game✨ (i think)</h3>
-        <p class="text-sm text-gray-400 mb-2">Junuary 15, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/q7HTQf8m/Screenshot-2025-01-19-183507.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">A game just about chilling and idk, Probably explode your phone too??</p>
-      </div>
-
-       <!-- BLOG POST 5 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">This will make your phone go boom boom</h3>
-        <p class="text-sm text-gray-400 mb-2">January 12, 2025</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/WzGW2KD4/Screenshot-2025-01-24-104658.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">Even my pc cant handle it kinda...</p>
-      </div>
-      <!-- BLOG POST 5 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">backrom gaem</h3>
-        <p class="text-sm text-gray-400 mb-2">November 22, 2024</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/PqDF3PtZ/Screenshot-2024-11-22-081352.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">pipi on kaki in pipi kaka land (discontinued game)</p>
-      </div>
-
-      <!-- BLOG POST 5 (HIDDEN INITIALLY) -->
-      <div class="p-4 md:p-6 rounded-xl bg-white/5 shadow-lg hidden">
-        <h3 class="text-xl md:text-2xl font-semibold mb-2">home scren</h3>
-        <p class="text-sm text-gray-400 mb-2">November 26, 2024</p>
-        <div class="relative">
-          <img src="https://i.postimg.cc/d3C2vTxm/Screenshot-2024-11-18-172123.png" class="w-full max-h-[300px] md:max-h-[400px] object-cover rounded mb-2 cursor-pointer" onclick="openFullImage(this.src)">
-          <img src="https://i.postimg.cc/tJw9X2Zs/R-1.png" class="w-5 h-5 md:w-6 md:h-6 absolute top-2 right-2 cursor-pointer" onclick="openFullImage('https://i.postimg.cc/268td6xm/Screenshot-2025-06-30-185741.png')">
-        </div>
-        <p class="text-white/80 text-sm md:text-base">backrom home screen cuz im bored</p>
-      </div>
+    <div class="card">
+      <h3>Subscribers</h3>
+      <div class="stat-number" id="subs">0</div>
     </div>
 
-    <!-- LOAD MORE BUTTON -->
-    <div class="flex justify-center mt-10">
-      <button id="loadMoreBtn" class="text-white font-semibold px-6 py-3 glass hover:bg-white/10 transition rounded-xl">
-        Load More Posts
-      </button>
+    <div class="card">
+      <h3>Total Views</h3>
+      <div class="stat-number" id="views">0</div>
     </div>
-  </div>
-</section>
 
+    <div class="card">
+      <h3>Total Videos</h3>
+      <div class="stat-number" id="videos">0</div>
+    </div>
 
-  <!-- ✅ FIXED MODAL -->
-  <div id="imageModal" class="fixed inset-0 hidden z-[9999] bg-black/90 justify-center items-center" onclick="closeFullImage()">
-    <img id="modalImage" class="max-w-[90%] max-h-[90%] rounded shadow-lg object-contain mx-auto my-auto" />
-  </div>
+  </section>
 
-  <!-- FOOTER -->
-  <footer class="text-center text-sm text-white/40 py-8">
-    &copy; 2025 Lour. Games. All rights reserved skib.
+  <footer>
+    Powered by YouTube API
   </footer>
 
-  <!-- JS -->
   <script>
-    // Slide show
-    const slides = document.querySelectorAll('.header-slide');
-    let current = 0;
-    setInterval(() => {
-      slides[current].classList.remove('active');
-      current = (current + 1) % slides.length;
-      slides[current].classList.add('active');
-    }, 5000);
+    const apiKey = "AIzaSyDfutskmtjZLJRLEa3NYnaUV_3nh-fJrwc";
+const channelId = "TbW_SfiOHpvNyrAa-GYgNQ";
 
-    // Scroll fade
-    const sections = document.querySelectorAll('section');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(s => observer.observe(s));
+fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`)
+.then(res => res.json())
+.then(data => {
+  const stats = data.items[0].statistics;
+  animateValue("subs", stats.subscriberCount);
+  animateValue("views", stats.viewCount);
+  animateValue("videos", stats.videoCount);
+});
 
-    // Fullscreen modal logic
-    function openFullImage(src) {
-      const modal = document.getElementById("imageModal");
-      const img = document.getElementById("modalImage");
-      img.src = src;
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-      document.body.style.overflow = 'hidden';
+function animateValue(id, end) {
+  let start = 0;
+  let duration = 2000;
+  let increment = end / (duration / 16);
+
+  let counter = setInterval(() => {
+    start += increment;
+    if (start >= end) {
+      start = end;
+      clearInterval(counter);
     }
-
-    function closeFullImage() {
-      const modal = document.getElementById("imageModal");
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape") closeFullImage();
-    });
-
-    // Mobile menu toggle with improved functionality
-    const menuBtn = document.getElementById("menuBtn");
-    const navLinks = document.getElementById("navLinks");
-    
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      navLinks.classList.toggle("hidden");
-      navLinks.classList.toggle("mobile-open");
-      menuBtn.textContent = navLinks.classList.contains("hidden") ? "☰" : "✕";
-    });
-    
-    // Close menu when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!navLinks.contains(e.target) && e.target !== menuBtn) {
-        navLinks.classList.add("hidden");
-        navLinks.classList.remove("mobile-open");
-        menuBtn.textContent = "☰";
-      }
-    });
-    
-    // Close mobile nav when clicking a link
-    document.querySelectorAll("#navLinks a").forEach(link => {
-      link.addEventListener("click", () => {
-        if (window.innerWidth < 768) {
-          navLinks.classList.add("hidden");
-          navLinks.classList.remove("mobile-open");
-          menuBtn.textContent = "☰";
-        }
-      });
-    });
-
-    // Load More Blog Posts
-    document.getElementById("loadMoreBtn").addEventListener("click", () => {
-      const hiddenPosts = document.querySelectorAll("#blogPosts .hidden");
-      hiddenPosts.forEach(post => post.classList.remove("hidden"));
-      document.getElementById("loadMoreBtn").classList.add("hidden");
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) {
-        navLinks.classList.remove("hidden", "mobile-open");
-      }
-    });
+    document.getElementById(id).innerText = 
+      Math.floor(start).toLocaleString();
+  }, 16);
+}
   </script>
+
 </body>
+
 </html>

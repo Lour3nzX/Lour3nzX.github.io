@@ -3,142 +3,290 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>JECK YT Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <title>JECK FUTURE DASH</title>
+
+  <!-- YouTube-like font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Roboto', sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at top, #111 0%, #000 100%);
+      background: radial-gradient(circle at top, #0f0f0f, #000);
       color: white;
-      min-height: 100vh;
       overflow-x: hidden;
     }
 
-    header {
-      padding: 20px 50px;
+    /* INTRO SCREEN */
+    #intro {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      backdrop-filter: blur(15px);
+      font-size: 32px;
+      letter-spacing: 2px;
+      background: black;
+      z-index: 20;
+      transition: opacity 1.5s ease;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background: white;
+      margin-left: 5px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      50%,
+      100% {
+        opacity: 1;
+      }
+
+      25%,
+      75% {
+        opacity: 0;
+      }
+    }
+
+    /* DYNAMIC ISLAND TOP BAR */
+    #dynamicIsland {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 900px;
       background: rgba(255, 255, 255, 0.05);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .logo {
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: 1px;
-    }
-
-    .container {
-      padding: 80px 50px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-    }
-
-    .card {
-      padding: 40px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(25px);
+      border-radius: 40px;
+      padding: 15px 30px;
+      text-align: center;
+      z-index: 15;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
+      cursor: pointer;
+      transition: all .3s ease;
+      font-weight: 700;
     }
 
-    .card:hover {
-      transform: translateY(-10px);
+    #dynamicIsland:hover {
+      transform: translateX(-50%) translateY(-5px);
       background: rgba(255, 255, 255, 0.08);
     }
 
-    .stat-number {
-      font-size: 40px;
-      font-weight: 800;
+    /* COUNTERS ROW */
+    #counters {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 120px;
+      /* space under intro */
+      flex-wrap: wrap;
+      z-index: 5;
+      position: relative;
+    }
+
+    .counter-box {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 20px 30px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all .3s ease;
+      min-width: 150px;
+    }
+
+    .counter-box:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .counter-number {
+      font-size: 36px;
+      font-weight: 700;
       margin-top: 10px;
     }
 
-    .glow {
-      position: fixed;
-      right: -200px;
-      bottom: -200px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-      filter: blur(120px);
+    .counter-label {
+      font-size: 16px;
+      color: #ccc;
     }
 
-    footer {
-      text-align: center;
-      padding: 40px;
-      opacity: 0.5;
+    /* MAIN DASHBOARD BELOW */
+    #main {
+      opacity: 0;
+      transition: opacity 2s ease;
+      padding: 50px;
+      overflow: auto;
+      margin-top: 50px;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 30px;
+      transition: all .3s ease;
+    }
+
+    .glass:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    #latestVideo img {
+      width: 100%;
+      border-radius: 15px;
+    }
+
+    canvas {
+      margin-top: 20px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="glow"></div>
+  <div id="intro">
+    <span id="typing"></span><span class="cursor"></span>
+  </div>
 
-  <header>
-    <div class="logo">JECK YT STATS</div>
-  </header>
+  <!-- DYNAMIC ISLAND HOME BUTTON -->
+  <div id="dynamicIsland">
+    HOME
+  </div>
 
-  <section class="container">
+  <!-- SUBSCRIBERS / VIEWS / WATCH TIME -->
+  <div id="counters">
+    <div class="counter-box">
+      <div id="subs" class="counter-number">0</div>
+      <div class="counter-label">Subscribers</div>
+    </div>
+    <div class="counter-box">
+      <div id="watchTime" class="counter-number">0</div>
+      <div class="counter-label">Hours Watched</div>
+    </div>
+    <div class="counter-box">
+      <div id="views" class="counter-number">0</div>
+      <div class="counter-label">Total Views</div>
+    </div>
+  </div>
 
-    <div class="card">
-      <h3>Subscribers</h3>
-      <div class="stat-number" id="subs">0</div>
+  <div id="main">
+
+    <!-- GRAPH BELOW COUNTERS -->
+    <div class="glass">
+      <h3>Channel Growth Graph</h3>
+      <canvas id="chart" width="800" height="250"></canvas>
     </div>
 
-    <div class="card">
-      <h3>Total Views</h3>
-      <div class="stat-number" id="views">0</div>
+    <!-- LATEST VIDEO -->
+    <div class="glass" id="latestVideo">
+      <h3>Latest Video</h3>
+      <div id="videoContent"></div>
     </div>
 
-    <div class="card">
-      <h3>Total Videos</h3>
-      <div class="stat-number" id="videos">0</div>
-    </div>
-
-  </section>
-
-  <footer>
-    Powered by YouTube API
-  </footer>
+  </div>
 
   <script>
-    const apiKey = "AIzaSyDfutskmtjZLJRLEa3NYnaUV_3nh-fJrwc";
-const channelId = "UCTbW_SfiOHpvNyrAa-GYgNQ";
+    const apiKey="AIzaSyDfutskmtjZLJRLEa3NYnaUV_3nh-fJrwc";
+const channelId="UCTbW_SfiOHpvNyrAa-GYgNQ";
 
+/* TYPEWRITER INTRO */
+const text="welcome user_";
+let i=0;
+function type(){
+  if(i<text.length){
+    document.getElementById("typing").innerHTML+=text.charAt(i);
+    i++;
+    setTimeout(type,100);
+  }else{
+    setTimeout(()=>{
+      document.getElementById("intro").style.opacity="0";
+      setTimeout(()=>{
+        document.getElementById("intro").style.display="none";
+        document.body.style.overflow="auto";
+        document.getElementById("main").style.opacity="1";
+      },1500);
+    },1000);
+  }
+}
+type();
+
+/* FETCH CHANNEL STATS */
 fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`)
-.then(res => res.json())
-.then(data => {
-  const stats = data.items[0].statistics;
-  animateValue("subs", stats.subscriberCount);
-  animateValue("views", stats.viewCount);
-  animateValue("videos", stats.videoCount);
+.then(res=>res.json())
+.then(data=>{
+  const stats=data.items[0].statistics;
+  animate("subs",stats.subscriberCount);
+  animate("views",stats.viewCount);
+  animate("watchTime",Math.floor(stats.viewCount/60)); // proxy for hours watched
 });
 
-function animateValue(id, end) {
-  let start = 0;
-  let duration = 2000;
-  let increment = end / (duration / 16);
+/* FETCH LATEST VIDEO */
+fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=1`)
+.then(res=>res.json())
+.then(data=>{
+  const vid=data.items[0];
+  document.getElementById("videoContent").innerHTML=`
+    <img src="${vid.snippet.thumbnails.high.url}">
+    <h4>${vid.snippet.title}</h4>
+  `;
+});
 
-  let counter = setInterval(() => {
-    start += increment;
-    if (start >= end) {
-      start = end;
+/* CHANNEL GROWTH GRAPH */
+const ctx=document.getElementById("chart");
+new Chart(ctx,{
+  type:"line",
+  data:{
+    labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    datasets:[{
+      label:"Views",
+      data:[1200,1900,3000,2500,4200,3800,5000],
+      borderColor:"white",
+      backgroundColor:"rgba(255,255,255,0.1)",
+      tension:0.4
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      legend:{labels:{color:"white"}}
+    },
+    scales:{
+      x:{ticks:{color:"white"}},
+      y:{ticks:{color:"white"}}
+    }
+  }
+});
+
+/* COUNTER ANIMATION */
+function animate(id,end){
+  let start=0;
+  let duration=2000;
+  let step=end/(duration/16);
+  let counter=setInterval(()=>{
+    start+=step;
+    if(start>=end){
+      start=end;
       clearInterval(counter);
     }
-    document.getElementById(id).innerText = 
-      Math.floor(start).toLocaleString();
-  }, 16);
+    document.getElementById(id).innerText= Math.floor(start).toLocaleString();
+  },16);
 }
   </script>
 

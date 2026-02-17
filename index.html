@@ -1,295 +1,810 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <title>JECK FUTURE DASH</title>
-
-  <!-- YouTube-like font -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <title>Zao Facts|Statistics</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at top, #0f0f0f, #000);
-      color: white;
+      background: #000;
+      color: #ddd;
+      font-family: system-ui, sans-serif;
+      min-height: 300vh;
       overflow-x: hidden;
     }
 
-    /* INTRO SCREEN */
-    #intro {
+    canvas {
       position: fixed;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 32px;
-      letter-spacing: 2px;
-      background: black;
-      z-index: 20;
-      transition: opacity 1.5s ease;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.6;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background: white;
-      margin-left: 5px;
-      animation: blink 1s infinite;
+    .blobs {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      opacity: 0.5;
     }
 
-    @keyframes blink {
+    .blob {
+      position: absolute;
+      background: radial-gradient(circle at 30% 40%, rgba(90, 90, 110, 0.25), transparent 60%);
+      border-radius: 50% 60% 40% 70%/60% 40% 70% 50%;
+      filter: blur(100px);
+      animation: float 40s infinite ease-in-out;
+    }
+
+    .blob:nth-child(1) {
+      width: 1200px;
+      height: 1200px;
+      top: -40%;
+      left: -50%;
+    }
+
+    .blob:nth-child(2) {
+      width: 1000px;
+      height: 1300px;
+      top: 20%;
+      right: -40%;
+      border-radius: 70% 40% 60% 50%/50% 70% 40% 60%;
+      animation-delay: 18s;
+    }
+
+    .blob:nth-child(3) {
+      width: 1100px;
+      height: 1100px;
+      bottom: -35%;
+      left: 0%;
+      animation-delay: 30s;
+    }
+
+    @keyframes float {
 
       0%,
-      50%,
       100% {
-        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
       }
 
-      25%,
+      25% {
+        transform: translate(250px, -180px) rotate(20deg);
+      }
+
+      50% {
+        transform: translate(-180px, 300px) rotate(-25deg);
+      }
+
       75% {
-        opacity: 0;
+        transform: translate(300px, 180px) rotate(12deg);
       }
     }
 
-    /* DYNAMIC ISLAND TOP BAR */
-    #dynamicIsland {
+    .greeting {
+      position: absolute;
+      top: 80px;
+      left: 40px;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #eee;
+      z-index: 90;
+      letter-spacing: 2px;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 2s ease-out;
+    }
+
+    .greeting.fade-out {
+      opacity: 0;
+    }
+
+    nav {
       position: fixed;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 80%;
-      max-width: 900px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(25px);
-      border-radius: 40px;
-      padding: 15px 30px;
-      text-align: center;
-      z-index: 15;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      cursor: pointer;
-      transition: all .3s ease;
-      font-weight: 700;
-    }
-
-    #dynamicIsland:hover {
-      transform: translateX(-50%) translateY(-5px);
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    /* COUNTERS ROW */
-    #counters {
+      width: 92%;
+      max-width: 1200px;
+      height: 70px;
+      background: rgba(30, 30, 35, 0.6);
+      backdrop-filter: blur(28px);
+      border: 1px solid rgba(180, 180, 180, 0.15);
+      border-radius: 999px;
+      box-shadow: 0 15px 60px rgba(0, 0, 0, 0.8);
       display: flex;
-      justify-content: center;
-      gap: 50px;
-      margin-top: 120px;
-      /* space under intro */
-      flex-wrap: wrap;
-      z-index: 5;
-      position: relative;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4rem;
+      transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 100;
     }
 
-    .counter-box {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 20px 30px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all .3s ease;
-      min-width: 150px;
+    nav.scrolled {
+      width: 480px;
+      height: 62px;
+      top: 10px;
+      padding: 0 3.5rem;
+      background: rgba(20, 20, 25, 0.75);
+      backdrop-filter: blur(36px);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 1);
+      justify-content: center !important;
     }
 
-    .counter-box:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.08);
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #eee;
     }
 
-    .counter-number {
-      font-size: 36px;
-      font-weight: 700;
-      margin-top: 10px;
+    nav.scrolled .logo {
+      display: none;
     }
 
-    .counter-label {
-      font-size: 16px;
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+    }
+
+    nav.scrolled .nav-links {
+      display: flex !important;
+      gap: 2.8rem;
+      margin: 0 auto;
+    }
+
+    .nav-links a {
       color: #ccc;
+      text-decoration: none;
+      font-size: 1.1rem;
+      opacity: 0.9;
+      transition: 0.4s;
+      cursor: pointer;
     }
 
-    /* MAIN DASHBOARD BELOW */
-    #main {
-      opacity: 0;
-      transition: opacity 2s ease;
-      padding: 50px;
-      overflow: auto;
-      margin-top: 50px;
+    .nav-links a:hover {
+      color: #fff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 30px;
-      margin-bottom: 30px;
-      transition: all .3s ease;
+    nav.scrolled .nav-links a {
+      font-size: 1.2rem;
+      opacity: 1;
     }
 
-    .glass:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.08);
+    main {
+      padding-top: 280px;
+      padding: 280px 6% 6rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
-    #latestVideo img {
+    .label {
+      font-size: 2.2rem;
+      opacity: 0.8;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+
+    .intro {
+      font-size: 6rem;
+      font-weight: 900;
+      letter-spacing: -4px;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 50px rgba(255, 255, 255, 0.35);
+      color: #fff;
+    }
+
+    .subs {
+      font-size: 10rem;
+      font-weight: 900;
+      line-height: 0.85;
+      text-shadow: 0 0 70px rgba(255, 255, 255, 0.45);
+      margin-bottom: 1rem;
+      color: #eee;
+    }
+
+    .typewriter-container {
+      font-family: 'Courier New', monospace;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: #aaa;
+      height: 2.5rem;
+      overflow: hidden;
+      margin-bottom: 4rem;
+      letter-spacing: 1px;
+    }
+
+    .typewriter {
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #aaa;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      from,
+      to {
+        border-color: transparent
+      }
+
+      50% {
+        border-color: #aaa
+      }
+    }
+
+    .content-wrap {
+      display: flex;
+      gap: 4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 6rem;
+    }
+
+    .stats-grid {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 5rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-label {
+      font-size: 1.6rem;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-top: 0.6rem;
+      color: #bbb;
+    }
+
+    .latest-video {
+      flex: 1;
+      min-width: 400px;
+      background: rgba(30, 30, 35, 0.65);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(180, 180, 180, 0.12);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7);
+      transition: transform 0.4s;
+    }
+
+    .latest-video:hover {
+      transform: scale(1.02);
+    }
+
+    .thumb {
       width: 100%;
-      border-radius: 15px;
+      height: auto;
+      display: block;
     }
 
-    canvas {
-      margin-top: 20px;
+    .video-info {
+      padding: 1.8rem;
+      background: rgba(20, 20, 25, 0.6);
+    }
+
+    .video-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #eee;
+    }
+
+    .video-stats {
+      display: flex;
+      gap: 1.8rem;
+      font-size: 1.3rem;
+      opacity: 0.95;
+      justify-content: center;
+      flex-wrap: wrap;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .video-stats span {
+      background: rgba(40, 40, 50, 0.9);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+    }
+
+    .videos-section {
+      margin: 5rem 0;
+    }
+
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .video-card {
+      background: rgba(25, 25, 30, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(150, 150, 150, 0.15);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s, box-shadow 0.3s, opacity 0.6s;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .video-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .video-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9);
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .card-info {
+      padding: 1.2rem;
+      text-align: left;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #ddd;
+    }
+
+    .card-meta {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      color: #ccc;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.6rem;
+    }
+
+    .card-meta span {
+      background: rgba(40, 40, 50, 0.8);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+    }
+
+    .show-more {
+      margin: 3rem auto;
+      padding: 1rem 2.5rem;
+      font-size: 1.3rem;
+      background: rgba(50, 50, 60, 0.8);
+      border: 1px solid #555;
+      border-radius: 12px;
+      color: #eee;
+      cursor: pointer;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .show-more:hover {
+      background: rgba(80, 80, 90, 0.9);
+      transform: scale(1.05);
+    }
+
+    .error {
+      color: #ff5555;
+      font-size: 1.5rem;
+      margin: 3rem auto;
+      max-width: 800px;
+    }
+
+    /* UPGRADED SCROLL BUTTON NIGGA 🔥😈 */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    #toTop {
+      position: fixed;
+      bottom: 35px;
+      right: 35px;
+      width: 65px;
+      height: 65px;
+      background: linear-gradient(135deg, #ff3366, #aa33ff, #33ccff);
+      color: white;
+      font-size: 2.4rem;
+      font-weight: bold;
+      text-align: center;
+      line-height: 65px;
+      border-radius: 50%;
+      box-shadow:
+        0 0 25px rgba(255, 50, 150, 0.7),
+        0 0 50px rgba(170, 50, 255, 0.5),
+        inset 0 0 15px rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(30px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 9999;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #toTop:hover {
+      transform: translateY(-10px) scale(1.15);
+      box-shadow:
+        0 0 40px rgba(255, 80, 180, 0.9),
+        0 0 80px rgba(170, 80, 255, 0.7),
+        0 0 120px rgba(50, 200, 255, 0.5);
+    }
+
+    #toTop.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 25px rgba(255, 50, 150, 0.6);
+      }
+
+      50% {
+        box-shadow: 0 0 45px rgba(255, 50, 150, 0.95);
+      }
+    }
+
+    #toTop.show {
+      animation: pulseGlow 2.5s infinite ease-in-out;
     }
   </style>
 </head>
 
 <body>
-
-  <div id="intro">
-    <span id="typing"></span><span class="cursor"></span>
+  <div class="greeting" id="greeting">Loading...</div>
+  <canvas id="stars"></canvas>
+  <div class="blobs">
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
   </div>
 
-  <!-- DYNAMIC ISLAND HOME BUTTON -->
-  <div id="dynamicIsland">
-    HOME
-  </div>
-
-  <!-- SUBSCRIBERS / VIEWS / WATCH TIME -->
-  <div id="counters">
-    <div class="counter-box">
-      <div id="subs" class="counter-number">0</div>
-      <div class="counter-label">Subscribers</div>
+  <nav id="island">
+    <div class="logo">Zap Studio</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Videos</a>
+      <a href="#">About</a>
+      <a href="#">Subscribe</a>
     </div>
-    <div class="counter-box">
-      <div id="watchTime" class="counter-number">0</div>
-      <div class="counter-label">Hours Watched</div>
-    </div>
-    <div class="counter-box">
-      <div id="views" class="counter-number">0</div>
-      <div class="counter-label">Total Views</div>
-    </div>
-  </div>
+  </nav>
 
-  <div id="main">
-
-    <!-- GRAPH BELOW COUNTERS -->
-    <div class="glass">
-      <h3>Channel Growth Graph</h3>
-      <canvas id="chart" width="800" height="250"></canvas>
+  <main>
+    <div class="label">Channel Overview</div>
+    <div class="intro">Subscribers</div>
+    <div class="subs">Loading...</div>
+    <div class="typewriter-container">
+      <span class="typewriter" id="typewriter"></span>
     </div>
 
-    <!-- LATEST VIDEO -->
-    <div class="glass" id="latestVideo">
-      <h3>Latest Video</h3>
-      <div id="videoContent"></div>
+    <div class="content-wrap">
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num" id="views">Loading...</div>
+          <div class="stat-label">Total Views</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" id="videocount">Loading...</div>
+          <div class="stat-label">Videos Uploaded</div>
+        </div>
+      </div>
+
+      <div class="latest-video" id="latestSection">
+        <img class="thumb" id="thumb" src="" alt="Latest Video">
+        <div class="video-info">
+          <div class="video-title" id="title">Loading latest...</div>
+          <div class="video-stats" id="vidstats"></div>
+        </div>
+      </div>
     </div>
 
-  </div>
+    <div class="videos-section" id="videosSection">
+      <h2 style="font-size:2.8rem; margin:5rem 0 2.5rem; text-align:center; color:#ccc;">All Videos</h2>
+      <div class="videos-grid" id="videosGrid"></div>
+      <div class="show-more" id="showMore" style="display:none;">Show More...</div>
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+  </main>
+
+  <!-- SCROLL BUTTON HERE NIGGA -->
+  <a href="#" id="toTop" title="Get tf back up nigga ☠️">↑</a>
 
   <script>
-    const apiKey="AIzaSyDfutskmtjZLJRLEa3NYnaUV_3nh-fJrwc";
-const channelId="UCTbW_SfiOHpvNyrAa-GYgNQ";
+    // API SETUP - PUT UR NEW KEY HERE U BOZO
+    const API_KEY = 'AIzaSyBq-mlkw1XOwiOmt171ilRASVz3rMx00kg'; // <-- CHANGE THIS TO UR FRESH KEY NIGGA
+    const CHANNEL_ID = 'UCTbW_SfiOHpvNyrAa-GYgNQ'; // <-- make sure this is correct or ur fucked
 
-/* TYPEWRITER INTRO */
-const text="welcome user_";
-let i=0;
-function type(){
-  if(i<text.length){
-    document.getElementById("typing").innerHTML+=text.charAt(i);
-    i++;
-    setTimeout(type,100);
-  }else{
-    setTimeout(()=>{
-      document.getElementById("intro").style.opacity="0";
-      setTimeout(()=>{
-        document.getElementById("intro").style.display="none";
-        document.body.style.overflow="auto";
-        document.getElementById("main").style.opacity="1";
-      },1500);
-    },1000);
-  }
-}
-type();
+    console.log("SCRIPT STARTED – Zap Studio edition 😈☠️");
+    console.log("Using API_KEY:", API_KEY.substring(0,10) + "... (dont dox urself retard)");
+    console.log("Channel ID:", CHANNEL_ID);
 
-/* FETCH CHANNEL STATS */
-fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${channelId}&key=${apiKey}`)
-.then(res=>res.json())
-.then(data=>{
-  const stats=data.items[0].statistics;
-  animate("subs",stats.subscriberCount);
-  animate("views",stats.viewCount);
-  animate("watchTime",Math.floor(stats.viewCount/60)); // proxy for hours watched
-});
-
-/* FETCH LATEST VIDEO */
-fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=1`)
-.then(res=>res.json())
-.then(data=>{
-  const vid=data.items[0];
-  document.getElementById("videoContent").innerHTML=`
-    <img src="${vid.snippet.thumbnails.high.url}">
-    <h4>${vid.snippet.title}</h4>
-  `;
-});
-
-/* CHANNEL GROWTH GRAPH */
-const ctx=document.getElementById("chart");
-new Chart(ctx,{
-  type:"line",
-  data:{
-    labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
-    datasets:[{
-      label:"Views",
-      data:[1200,1900,3000,2500,4200,3800,5000],
-      borderColor:"white",
-      backgroundColor:"rgba(255,255,255,0.1)",
-      tension:0.4
-    }]
-  },
-  options:{
-    responsive:true,
-    plugins:{
-      legend:{labels:{color:"white"}}
-    },
-    scales:{
-      x:{ticks:{color:"white"}},
-      y:{ticks:{color:"white"}}
+    function setGreeting() {
+      const hour = new Date().getHours();
+      let greet = "Yo Jeck";
+      if (hour < 12) greet = "Good Morning, Jeck";
+      else if (hour < 17) greet = "Afternoon, Jeck";
+      else if (hour < 21) greet = "Evening, Jeck";
+      else greet = "Night, Jeck";
+      const greetEl = document.getElementById('greeting');
+      greetEl.textContent = greet;
+      setTimeout(() => greetEl.classList.add('fade-out'), 5000);
     }
-  }
-});
+    setGreeting();
 
-/* COUNTER ANIMATION */
-function animate(id,end){
-  let start=0;
-  let duration=2000;
-  let step=end/(duration/16);
-  let counter=setInterval(()=>{
-    start+=step;
-    if(start>=end){
-      start=end;
-      clearInterval(counter);
+    const sentences = [
+      "Keep going, bro!",
+      "Post every 1-2 days",
+      "Goal is 1k!",
+      "Same time tommorow unc?",
+      "Just think about the money🤔",
+      "Stuck at 30k again, am I right?",
+      "Space Facts or Space Edits?",
+      "Get the sub goin unc",
+      "New Post when?",
+      "Keep dreamin big u broke bozo ☠️"
+    ];
+
+    let sentenceIndex = 0;
+    let charIndex = 0;
+    let currentSentence = '';
+    let isDeleting = false;
+
+    function type() {
+      const typewriter = document.getElementById('typewriter');
+      const speed = isDeleting ? 30 : 60;
+      if (!isDeleting && charIndex < sentences[sentenceIndex].length) {
+        currentSentence += sentences[sentenceIndex].charAt(charIndex);
+        typewriter.textContent = currentSentence;
+        charIndex++;
+        setTimeout(type, speed);
+      } else if (isDeleting && charIndex > 0) {
+        currentSentence = currentSentence.substring(0, charIndex - 1);
+        typewriter.textContent = currentSentence;
+        charIndex--;
+        setTimeout(type, speed);
+      } else {
+        if (!isDeleting) {
+          setTimeout(() => { isDeleting = true; type(); }, 2000);
+        } else {
+          isDeleting = false;
+          sentenceIndex = (sentenceIndex + 1) % sentences.length;
+          charIndex = 0;
+          setTimeout(type, 500);
+        }
+      }
     }
-    document.getElementById(id).innerText= Math.floor(start).toLocaleString();
-  },16);
-}
+    type();
+
+    // stars n shit
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+    let stars = [];
+    let shootingStars = [];
+    for(let i = 0; i < 120; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.2 + 0.3,
+        opacity: Math.random() * 0.4 + 0.2,
+        twinkleSpeed: Math.random() * 0.003 + 0.001
+      });
+    }
+
+    function createShootingStar() {
+      return {
+        x: Math.random() * canvas.width,
+        y: -150,
+        length: Math.random() * 150 + 200,
+        speed: Math.random() * 3 + 1.2,
+        angle: Math.PI / 4 + Math.random() * 0.8 - 0.4,
+        opacity: 0.85,
+        fadeSpeed: 0.005
+      };
+    }
+
+    shootingStars.push(createShootingStar());
+    let lastSpawn = Date.now();
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        s.opacity += Math.sin(Date.now() * s.twinkleSpeed * 0.0005) * 0.008;
+        ctx.fillStyle = `rgba(220, 220, 255, ${s.opacity})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      shootingStars.forEach((s, index) => {
+        const gradient = ctx.createLinearGradient(s.x, s.y, s.x - Math.cos(s.angle) * s.length, s.y - Math.sin(s.angle) * s.length);
+        gradient.addColorStop(0, `rgba(255, 255, 240, ${s.opacity})`);
+        gradient.addColorStop(1, 'rgba(255, 255, 240, 0)');
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - Math.cos(s.angle) * s.length, s.y - Math.sin(s.angle) * s.length);
+        ctx.stroke();
+        s.x += Math.cos(s.angle) * s.speed;
+        s.y += Math.sin(s.angle) * s.speed;
+        s.opacity -= s.fadeSpeed;
+        if (s.opacity <= 0 || s.y > canvas.height + 200) shootingStars[index] = createShootingStar();
+      });
+      if (Date.now() - lastSpawn > 5000 + Math.random() * 3000) {
+        shootingStars.push(createShootingStar());
+        lastSpawn = Date.now();
+      }
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+
+    async function fetchLiveStats() {
+      console.log("fetchLiveStats started – prayin to Hitler this works 🔥🙏");
+      try {
+        console.log("Fetching channel stats...");
+        const channelRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`);
+        if (!channelRes.ok) {
+          const errText = await channelRes.text();
+          throw new Error(`Channel fetch failed: ${channelRes.status} - ${errText}`);
+        }
+        const channelData = await channelRes.json();
+        console.log("Channel data got:", channelData);
+        const stats = channelData.items?.[0]?.statistics;
+        if (!stats) throw new Error("No stats in response nigga");
+        document.querySelector('.subs').textContent = Number(stats.subscriberCount || 0).toLocaleString();
+        document.getElementById('views').textContent = Number(stats.viewCount || 0).toLocaleString();
+        document.getElementById('videocount').textContent = Number(stats.videoCount || 0).toLocaleString();
+
+        console.log("Fetching latest video...");
+        const searchRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=1&order=date&type=video&key=${API_KEY}`);
+        if (!searchRes.ok) throw new Error(`Search fetch failed: ${searchRes.status}`);
+        const searchData = await searchRes.json();
+        if (!searchData.items?.length) throw new Error('No vids nigga');
+        const latest = searchData.items[0];
+        const vidId = latest.id.videoId;
+        document.getElementById('thumb').src = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
+        document.getElementById('title').textContent = latest.snippet.title;
+
+        console.log("Fetching video stats for", vidId);
+        const vidRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${vidId}&key=${API_KEY}`);
+        if (!vidRes.ok) throw new Error(`Video stats fetch failed: ${vidRes.status}`);
+        const vidData = await vidRes.json();
+        const vStats = vidData.items[0].statistics;
+        const pubDate = new Date(latest.snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('vidstats').innerHTML = `
+          <span>${Number(vStats.viewCount || 0).toLocaleString()} views</span>
+          <span>${Number(vStats.likeCount || 0).toLocaleString()} likes</span>
+          <span>${Number(vStats.commentCount || 0).toLocaleString()} comments</span>
+          <span>${pubDate}</span>
+        `;
+
+        console.log("Fetching all videos batch...");
+        const fullSearchRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&order=date&type=video&key=${API_KEY}`);
+        if (!fullSearchRes.ok) throw new Error(`Full search failed: ${fullSearchRes.status}`);
+        const fullData = await fullSearchRes.json();
+        const allItems = fullData.items || [];
+        const grid = document.getElementById('videosGrid');
+        grid.innerHTML = '';
+
+        const videoIds = allItems.map(item => item.id.videoId).join(',');
+        let vidStatsMap = {};
+        if (videoIds) {
+          const batchStatsRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${API_KEY}`);
+          if (!batchStatsRes.ok) throw new Error(`Batch stats failed: ${batchStatsRes.status}`);
+          const batchData = await batchStatsRes.json();
+          batchData.items.forEach(item => vidStatsMap[item.id] = item.statistics);
+        }
+
+        const initialCount = 12;
+        let shown = 0;
+
+        function showNextBatch() {
+          const end = Math.min(shown + initialCount, allItems.length);
+          for(let i=shown; i<end; i++) {
+            const item = allItems[i];
+            const vId = item.id.videoId;
+            const stats = vidStatsMap[vId] || {};
+            const cardDate = new Date(item.snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.innerHTML = `
+              <img class="card-thumb" src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.snippet.title}">
+              <div class="card-info">
+                <div class="card-title">${item.snippet.title}</div>
+                <div class="card-meta">
+                  <span>${Number(stats.viewCount || 0).toLocaleString()} views</span>
+                  <span>${Number(stats.likeCount || 0).toLocaleString()} likes</span>
+                  <span>${Number(stats.commentCount || 0).toLocaleString()} comments</span>
+                  <span>${cardDate}</span>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+            setTimeout(() => card.classList.add('visible'), 100 * (i - shown));
+          }
+          shown = end;
+          const showMoreBtn = document.getElementById('showMore');
+          if (shown < allItems.length) showMoreBtn.style.display = 'inline-block';
+          else showMoreBtn.style.display = 'none';
+        }
+
+        showNextBatch();
+        document.getElementById('showMore').addEventListener('click', showNextBatch);
+
+        console.log("ALL DATA LOADED SUCCESS NIGGA 🔥😎");
+
+      } catch (err) {
+        console.error("FETCH FUCKED UP:", err.message);
+        document.getElementById('errorMsg').textContent = `API fucked: ${err.message} – fix ur key/ID u bozo`;
+      }
+    }
+    fetchLiveStats();
+
+    const nav = document.getElementById('island');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 140);
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const text = this.textContent.trim().toLowerCase();
+        let targetElement;
+        if (text === 'home') targetElement = document.body;
+        else if (text === 'videos') targetElement = document.getElementById('videosSection');
+        if (targetElement) {
+          const yOffset = -120;
+          const y = targetElement.getBoundingClientRect().top + window.scrollY + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        } else {
+          console.log("no target u blind bitch");
+        }
+      });
+    });
+
   </script>
-
 </body>
 
 </html>

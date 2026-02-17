@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Zap Facts|Statistics</title>
+  <title>Zao Facts|Statistics</title>
   <style>
     * {
       margin: 0;
@@ -536,6 +536,13 @@
       </div>
     </div>
 
+    <!-- TOP 3 POPULAR SECTION ADDED HERE NIGGA 🤑🔥 -->
+    <div class="videos-section" id="popularSection">
+      <h2 style="font-size:2.8rem; margin:3rem 0 2.5rem; text-align:center; color:#ccc;">Top 3 Bangers (Most Viewed)
+        😈☠️</h2>
+      <div class="videos-grid" id="popularGrid"></div>
+    </div>
+
     <div class="videos-section" id="videosSection">
       <h2 style="font-size:2.8rem; margin:5rem 0 2.5rem; text-align:center; color:#ccc;">All Videos</h2>
       <div class="videos-grid" id="videosGrid"></div>
@@ -571,15 +578,15 @@
     setGreeting();
 
     const sentences = [
-      "Keep going, bro!",
-      "Post every 1-2 days",
-      "Goal is 1k!",
-      "Same time tommorow unc?",
-      "Just think about the money🤔",
-      "Stuck at 30k again, am I right?",
-      "Space Facts or Space Edits?",
-      "Get the sub goin unc",
-      "New Post when?",
+      "Still grindin in 2026 frfr ☠️",
+      "9 subs n countin... kinda 💀",
+      "Beach vlogs hittin different 😭",
+      "Hitler would be proud of dis dedication 🔥",
+      "Upload more or stay invisible nigga 🤑",
+      "Paranaque finest channel deadass 🙏",
+      "0 comments gang rise up lmao",
+      "Typewriter go brrr while subs sleep 😈",
+      "Skibidi toilet better than dis channel fr",
       "Keep dreamin big u broke bozo ☠️"
     ];
 
@@ -720,6 +727,52 @@
           <span>${pubDate}</span>
         `;
 
+        // TOP 3 POPULAR VIDS SECTION 🔥🤑
+        console.log("Grabbing top 3 most viewed vids...");
+        const popularRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=3&order=viewCount&type=video&key=${API_KEY}`);
+        if (!popularRes.ok) throw new Error(`Popular search fucked: ${popularRes.status}`);
+        const popularData = await popularRes.json();
+        const popItems = popularData.items || [];
+
+        const popIds = popItems.map(item => item.id.videoId).join(',');
+        let popStatsMap = {};
+        if (popIds) {
+          const popStatsRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${popIds}&key=${API_KEY}`);
+          if (!popStatsRes.ok) throw new Error(`Popular stats fucked: ${popStatsRes.status}`);
+          const popBatch = await popStatsRes.json();
+          popBatch.items.forEach(item => popStatsMap[item.id] = item.statistics);
+        }
+
+        const popGrid = document.getElementById('popularGrid');
+        popGrid.innerHTML = '';
+
+        popItems.forEach((item, idx) => {
+          const vId = item.id.videoId;
+          const stats = popStatsMap[vId] || {};
+          const popDate = new Date(item.snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          const card = document.createElement('div');
+          card.className = 'video-card';
+          card.innerHTML = `
+            <img class="card-thumb" src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.snippet.title}">
+            <div class="card-info">
+              <div class="card-title">#${idx+1} ${item.snippet.title}</div>
+              <div class="card-meta">
+                <span>${Number(stats.viewCount || 0).toLocaleString()} views </span>
+                <span>${Number(stats.likeCount || 0).toLocaleString()} likes </span>
+                <span>${Number(stats.commentCount || 0).toLocaleString()} comments </span>
+                <span>${popDate}</span>
+              </div>
+            </div>
+          `;
+          popGrid.appendChild(card);
+          setTimeout(() => card.classList.add('visible'), 100 * idx);
+        });
+
+        if (popItems.length === 0) {
+          popGrid.innerHTML = '<p style="color:#ff5555; text-align:center; padding:2rem;">No bangers yet nigga, channel ded af 💀🙏 Upload sumthin</p>';
+        }
+
+        // ALL VIDEOS BATCH (latest to oldest)
         console.log("Fetching all videos batch...");
         const fullSearchRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&order=date&type=video&key=${API_KEY}`);
         if (!fullSearchRes.ok) throw new Error(`Full search failed: ${fullSearchRes.status}`);

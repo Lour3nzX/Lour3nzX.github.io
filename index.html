@@ -155,7 +155,6 @@
     }
 
     nav.scrolled .nav-links {
-      display: flex !important;
       gap: 2.8rem;
       margin: 0 auto;
     }
@@ -180,7 +179,6 @@
     }
 
     main {
-      padding-top: 280px;
       padding: 280px 6% 6rem;
       max-width: 1400px;
       margin: 0 auto;
@@ -214,6 +212,11 @@
       text-shadow: 0 0 70px rgba(255, 255, 255, 0.45);
       margin-bottom: 1rem;
       color: #eee;
+      transition: text-shadow 0.6s;
+    }
+
+    .subs.glow {
+      text-shadow: 0 0 60px #ff3366, 0 0 100px #aa33ff !important;
     }
 
     .typewriter-container {
@@ -271,6 +274,11 @@
       font-size: 5rem;
       font-weight: 800;
       color: #fff;
+      transition: text-shadow 0.6s;
+    }
+
+    .stat-num.glow {
+      text-shadow: 0 0 60px #ff3366, 0 0 100px #aa33ff !important;
     }
 
     .stat-label {
@@ -425,7 +433,6 @@
       max-width: 800px;
     }
 
-    /* UPGRADED SCROLL BUTTON NIGGA 🔥😈 */
     html {
       scroll-behavior: smooth;
     }
@@ -443,31 +450,25 @@
       text-align: center;
       line-height: 65px;
       border-radius: 50%;
-      box-shadow:
-        0 0 25px rgba(255, 50, 150, 0.7),
-        0 0 50px rgba(170, 50, 255, 0.5),
-        inset 0 0 15px rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 25px rgba(255, 50, 150, 0.7), 0 0 50px rgba(170, 50, 255, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.4);
       opacity: 0;
       visibility: hidden;
       transform: translateY(30px);
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       z-index: 9999;
-      text-decoration: none;
       cursor: pointer;
     }
 
     #toTop:hover {
       transform: translateY(-10px) scale(1.15);
-      box-shadow:
-        0 0 40px rgba(255, 80, 180, 0.9),
-        0 0 80px rgba(170, 80, 255, 0.7),
-        0 0 120px rgba(50, 200, 255, 0.5);
+      box-shadow: 0 0 40px rgba(255, 80, 180, 0.9), 0 0 80px rgba(170, 80, 255, 0.7), 0 0 120px rgba(50, 200, 255, 0.5);
     }
 
     #toTop.show {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
+      animation: pulseGlow 2.5s infinite ease-in-out;
     }
 
     @keyframes pulseGlow {
@@ -480,10 +481,6 @@
       50% {
         box-shadow: 0 0 45px rgba(255, 50, 150, 0.95);
       }
-    }
-
-    #toTop.show {
-      animation: pulseGlow 2.5s infinite ease-in-out;
     }
   </style>
 </head>
@@ -510,10 +507,8 @@
   <main>
     <div class="label">Channel Overview</div>
     <div class="intro">Subscribers</div>
-    <div class="subs">Loading...</div>
-    <div class="typewriter-container">
-      <span class="typewriter" id="typewriter"></span>
-    </div>
+    <div class="subs" id="subsCount">Loading...</div>
+    <div class="typewriter-container"><span class="typewriter" id="typewriter"></span></div>
 
     <div class="content-wrap">
       <div class="stats-grid">
@@ -526,7 +521,6 @@
           <div class="stat-label">Videos Uploaded</div>
         </div>
       </div>
-
       <div class="latest-video" id="latestSection">
         <img class="thumb" id="thumb" src="" alt="Latest Video">
         <div class="video-info">
@@ -536,9 +530,9 @@
       </div>
     </div>
 
-    <!-- TOP 3 POPULAR SECTION ADDED HERE NIGGA 🤑🔥 -->
     <div class="videos-section" id="popularSection">
-      <h2 style="font-size:2.8rem; margin:3rem 0 2.5rem; text-align:center; color:#ccc;">Top 3 Bangers (Most Viewed) 😈☠️</h2>
+      <h2 style="font-size:2.8rem; margin:3rem 0 2.5rem; text-align:center; color:#ccc;">Top 3 Bangers (Most Viewed)
+        😈☠️</h2>
       <div class="videos-grid" id="popularGrid"></div>
     </div>
 
@@ -551,17 +545,11 @@
     <div class="error" id="errorMsg"></div>
   </main>
 
-  <!-- SCROLL BUTTON HERE NIGGA -->
   <a href="#" id="toTop" title="Get tf back up nigga ☠️">↑</a>
 
   <script>
-    // API SETUP - PUT UR NEW KEY HERE U BOZO
-    const API_KEY = 'AIzaSyBq-mlkw1XOwiOmt171ilRASVz3rMx00kg'; // <-- CHANGE THIS TO UR FRESH KEY NIGGA
-    const CHANNEL_ID = 'UCTbW_SfiOHpvNyrAa-GYgNQ'; // <-- make sure this is correct or ur fucked
-
-    console.log("SCRIPT STARTED – Zap Studio edition 😈☠️");
-    console.log("Using API_KEY:", API_KEY.substring(0,10) + "... (dont dox urself retard)");
-    console.log("Channel ID:", CHANNEL_ID);
+    const API_KEY = 'AIzaSyBcOri1P6QYGN5QMmr38otkqR_V7acT_sI'; // CHANGE IF DEAD U BOZO
+    const CHANNEL_ID = 'UCTbW_SfiOHpvNyrAa-GYgNQ';
 
     function setGreeting() {
       const hour = new Date().getHours();
@@ -570,292 +558,206 @@
       else if (hour < 17) greet = "Afternoon, Jeck";
       else if (hour < 21) greet = "Evening, Jeck";
       else greet = "Night, Jeck";
-      const greetEl = document.getElementById('greeting');
-      greetEl.textContent = greet;
-      setTimeout(() => greetEl.classList.add('fade-out'), 5000);
+      const el = document.getElementById('greeting');
+      el.textContent = greet;
+      setTimeout(() => el.classList.add('fade-out'), 5000);
     }
     setGreeting();
 
-    const sentences = [
-      "Still grindin in 2026 frfr ☠️",
-      "9 subs n countin... kinda 💀",
-      "Beach vlogs hittin different 😭",
-      "Hitler would be proud of dis dedication 🔥",
-      "Upload more or stay invisible nigga 🤑",
-      "Paranaque finest channel deadass 🙏",
-      "0 comments gang rise up lmao",
-      "Typewriter go brrr while subs sleep 😈",
-      "Skibidi toilet better than dis channel fr",
-      "Keep dreamin big u broke bozo ☠️"
-    ];
-
-    let sentenceIndex = 0;
-    let charIndex = 0;
-    let currentSentence = '';
-    let isDeleting = false;
-
+    const sentences = ["Still grindin in 2026 frfr ☠️","9 subs n countin... kinda 💀","Beach vlogs hittin different 😭","Hitler would be proud of dis dedication 🔥","Upload more or stay invisible nigga 🤑","Paranaque finest channel deadass 🙏","0 comments gang rise up lmao","Typewriter go brrr while subs sleep 😈","Skibidi toilet better than dis channel fr","Keep dreamin big u broke bozo ☠️"];
+    let sentenceIndex = 0, charIndex = 0, currentSentence = '', isDeleting = false;
     function type() {
-      const typewriter = document.getElementById('typewriter');
+      const el = document.getElementById('typewriter');
       const speed = isDeleting ? 30 : 60;
       if (!isDeleting && charIndex < sentences[sentenceIndex].length) {
-        currentSentence += sentences[sentenceIndex].charAt(charIndex);
-        typewriter.textContent = currentSentence;
-        charIndex++;
+        currentSentence += sentences[sentenceIndex].charAt(charIndex++);
+        el.textContent = currentSentence;
         setTimeout(type, speed);
       } else if (isDeleting && charIndex > 0) {
-        currentSentence = currentSentence.substring(0, charIndex - 1);
-        typewriter.textContent = currentSentence;
-        charIndex--;
+        currentSentence = currentSentence.substring(0, --charIndex);
+        el.textContent = currentSentence;
         setTimeout(type, speed);
       } else {
-        if (!isDeleting) {
-          setTimeout(() => { isDeleting = true; type(); }, 2000);
-        } else {
-          isDeleting = false;
-          sentenceIndex = (sentenceIndex + 1) % sentences.length;
-          charIndex = 0;
-          setTimeout(type, 500);
-        }
+        if (!isDeleting) setTimeout(() => { isDeleting = true; type(); }, 2000);
+        else { isDeleting = false; sentenceIndex = (sentenceIndex + 1) % sentences.length; charIndex = 0; setTimeout(type, 500); }
       }
     }
     type();
 
-    // stars n shit
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
-
-    let stars = [];
-    let shootingStars = [];
-    for(let i = 0; i < 120; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1.2 + 0.3,
-        opacity: Math.random() * 0.4 + 0.2,
-        twinkleSpeed: Math.random() * 0.003 + 0.001
-      });
-    }
-
-    function createShootingStar() {
-      return {
-        x: Math.random() * canvas.width,
-        y: -150,
-        length: Math.random() * 150 + 200,
-        speed: Math.random() * 3 + 1.2,
-        angle: Math.PI / 4 + Math.random() * 0.8 - 0.4,
-        opacity: 0.85,
-        fadeSpeed: 0.005
-      };
-    }
-
+    let stars = [], shootingStars = [];
+    for(let i=0; i<120; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.2+0.3, opacity:Math.random()*0.4+0.2, twinkleSpeed:Math.random()*0.003+0.001});
+    function createShootingStar() { return {x:Math.random()*canvas.width, y:-150, length:Math.random()*150+200, speed:Math.random()*3+1.2, angle:Math.PI/4+Math.random()*0.8-0.4, opacity:0.85, fadeSpeed:0.005}; }
     shootingStars.push(createShootingStar());
     let lastSpawn = Date.now();
-
     function animateStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => {
-        s.opacity += Math.sin(Date.now() * s.twinkleSpeed * 0.0005) * 0.008;
-        ctx.fillStyle = `rgba(220, 220, 255, ${s.opacity})`;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fill();
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      stars.forEach(s => { s.opacity += Math.sin(Date.now()*s.twinkleSpeed*0.0005)*0.008; ctx.fillStyle=`rgba(220,220,255,${s.opacity})`; ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fill(); });
+      shootingStars.forEach((s,i) => {
+        const g = ctx.createLinearGradient(s.x,s.y,s.x-Math.cos(s.angle)*s.length,s.y-Math.sin(s.angle)*s.length);
+        g.addColorStop(0,`rgba(255,255,240,${s.opacity})`); g.addColorStop(1,'rgba(255,255,240,0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x-Math.cos(s.angle)*s.length,s.y-Math.sin(s.angle)*s.length); ctx.stroke();
+        s.x += Math.cos(s.angle)*s.speed; s.y += Math.sin(s.angle)*s.speed; s.opacity -= s.fadeSpeed;
+        if (s.opacity <= 0 || s.y > canvas.height+200) shootingStars[i] = createShootingStar();
       });
-      shootingStars.forEach((s, index) => {
-        const gradient = ctx.createLinearGradient(s.x, s.y, s.x - Math.cos(s.angle) * s.length, s.y - Math.sin(s.angle) * s.length);
-        gradient.addColorStop(0, `rgba(255, 255, 240, ${s.opacity})`);
-        gradient.addColorStop(1, 'rgba(255, 255, 240, 0)');
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(s.x - Math.cos(s.angle) * s.length, s.y - Math.sin(s.angle) * s.length);
-        ctx.stroke();
-        s.x += Math.cos(s.angle) * s.speed;
-        s.y += Math.sin(s.angle) * s.speed;
-        s.opacity -= s.fadeSpeed;
-        if (s.opacity <= 0 || s.y > canvas.height + 200) shootingStars[index] = createShootingStar();
-      });
-      if (Date.now() - lastSpawn > 5000 + Math.random() * 3000) {
-        shootingStars.push(createShootingStar());
-        lastSpawn = Date.now();
-      }
+      if (Date.now() - lastSpawn > 5000 + Math.random()*3000) { shootingStars.push(createShootingStar()); lastSpawn = Date.now(); }
       requestAnimationFrame(animateStars);
     }
     animateStars();
 
-    async function fetchLiveStats() {
-      console.log("fetchLiveStats started – prayin to Hitler this works 🔥🙏");
+    let lastSubs = 0, lastViews = 0;
+    function animateNumber(el, start, end, duration=1400) {
+      if (start === end) { el.textContent = Number(end).toLocaleString(); return; }
+      const dir = end > start ? 1 : -1;
+      const diff = Math.abs(end - start);
+      let current = start;
+      const stepTime = Math.max(20, 800 / (diff || 1));
+      const inc = dir * Math.ceil(diff / (duration / stepTime));
+      const timer = setInterval(() => {
+        current += inc;
+        if ((dir > 0 && current >= end) || (dir < 0 && current <= end)) { current = end; clearInterval(timer); }
+        el.textContent = Number(Math.floor(current)).toLocaleString();
+        el.classList.add('glow');
+        setTimeout(() => el.classList.remove('glow'), 900);
+      }, stepTime);
+    }
+
+    let shown = 0;
+    function showNextBatch(allItems, allStats, grid) {
+      const batchSize = 12;
+      const end = Math.min(shown + batchSize, allItems.length);
+      for (let i = shown; i < end; i++) {
+        const item = allItems[i];
+        const vId = item.id.videoId;
+        const st = allStats[vId] || {};
+        const date = new Date(item.snippet.publishedAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `<img class="card-thumb" src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.snippet.title}">
+          <div class="card-info">
+            <div class="card-title">${item.snippet.title}</div>
+            <div class="card-meta">
+              <span>${Number(st.viewCount||0).toLocaleString()} views</span>
+              <span>${Number(st.likeCount||0).toLocaleString()} likes</span>
+              <span>${Number(st.commentCount||0).toLocaleString()} comments</span>
+              <span>${date}</span>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+        setTimeout(() => card.classList.add('visible'), 100 * (i - shown));
+      }
+      shown = end;
+      document.getElementById('showMore').style.display = shown < allItems.length ? 'inline-block' : 'none';
+    }
+
+    async function fetchLiveStats(initial = false) {
       try {
-        console.log("Fetching channel stats...");
-        const channelRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`);
-        if (!channelRes.ok) {
-          const errText = await channelRes.text();
-          throw new Error(`Channel fetch failed: ${channelRes.status} - ${errText}`);
-        }
-        const channelData = await channelRes.json();
-        console.log("Channel data got:", channelData);
-        const stats = channelData.items?.[0]?.statistics;
-        if (!stats) throw new Error("No stats in response nigga");
-        document.querySelector('.subs').textContent = Number(stats.subscriberCount || 0).toLocaleString();
-        document.getElementById('views').textContent = Number(stats.viewCount || 0).toLocaleString();
+        const chRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`);
+        if (!chRes.ok) throw new Error("channel dead");
+        const chData = await chRes.json();
+        const stats = chData.items?.[0]?.statistics;
+        if (!stats) throw new Error("no stats nigga");
+
+        const newSubs = Number(stats.subscriberCount || 0);
+        const newViews = Number(stats.viewCount || 0);
         document.getElementById('videocount').textContent = Number(stats.videoCount || 0).toLocaleString();
 
-        console.log("Fetching latest video...");
-        const searchRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=1&order=date&type=video&key=${API_KEY}`);
-        if (!searchRes.ok) throw new Error(`Search fetch failed: ${searchRes.status}`);
-        const searchData = await searchRes.json();
-        if (!searchData.items?.length) throw new Error('No vids nigga');
-        const latest = searchData.items[0];
-        const vidId = latest.id.videoId;
-        document.getElementById('thumb').src = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
-        document.getElementById('title').textContent = latest.snippet.title;
-
-        console.log("Fetching video stats for", vidId);
-        const vidRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${vidId}&key=${API_KEY}`);
-        if (!vidRes.ok) throw new Error(`Video stats fetch failed: ${vidRes.status}`);
-        const vidData = await vidRes.json();
-        const vStats = vidData.items[0].statistics;
-        const pubDate = new Date(latest.snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        document.getElementById('vidstats').innerHTML = `
-          <span>${Number(vStats.viewCount || 0).toLocaleString()} views</span>
-          <span>${Number(vStats.likeCount || 0).toLocaleString()} likes</span>
-          <span>${Number(vStats.commentCount || 0).toLocaleString()} comments</span>
-          <span>${pubDate}</span>
-        `;
-
-        // TOP 3 POPULAR VIDS SECTION 🔥🤑
-        console.log("Grabbing top 3 most viewed vids...");
-        const popularRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=3&order=viewCount&type=video&key=${API_KEY}`);
-        if (!popularRes.ok) throw new Error(`Popular search fucked: ${popularRes.status}`);
-        const popularData = await popularRes.json();
-        const popItems = popularData.items || [];
-
-        const popIds = popItems.map(item => item.id.videoId).join(',');
-        let popStatsMap = {};
-        if (popIds) {
-          const popStatsRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${popIds}&key=${API_KEY}`);
-          if (!popStatsRes.ok) throw new Error(`Popular stats fucked: ${popStatsRes.status}`);
-          const popBatch = await popStatsRes.json();
-          popBatch.items.forEach(item => popStatsMap[item.id] = item.statistics);
+        if (initial) {
+          lastSubs = newSubs; lastViews = newViews;
+          document.getElementById('subsCount').textContent = newSubs.toLocaleString();
+          document.getElementById('views').textContent = newViews.toLocaleString();
+        } else {
+          if (newSubs !== lastSubs) { animateNumber(document.getElementById('subsCount'), lastSubs, newSubs); lastSubs = newSubs; }
+          if (newViews !== lastViews) { animateNumber(document.getElementById('views'), lastViews, newViews, 1800); lastViews = newViews; }
         }
 
-        const popGrid = document.getElementById('popularGrid');
-        popGrid.innerHTML = '';
-
-        popItems.forEach((item, idx) => {
-          const vId = item.id.videoId;
-          const stats = popStatsMap[vId] || {};
-          const popDate = new Date(item.snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-          const card = document.createElement('div');
-          card.className = 'video-card';
-          card.innerHTML = `
-            <img class="card-thumb" src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.snippet.title}">
-            <div class="card-info">
-              <div class="card-title">#${idx+1} ${item.snippet.title}</div>
-              <div class="card-meta">
-                <span>${Number(stats.viewCount || 0).toLocaleString()} views 🔥</span>
-                <span>${Number(stats.likeCount || 0).toLocaleString()} likes 🤑</span>
-                <span>${Number(stats.commentCount || 0).toLocaleString()} comments 😭</span>
-                <span>${popDate}</span>
-              </div>
-            </div>
-          `;
-          popGrid.appendChild(card);
-          setTimeout(() => card.classList.add('visible'), 100 * idx);
-        });
-
-        if (popItems.length === 0) {
-          popGrid.innerHTML = '<p style="color:#ff5555; text-align:center; padding:2rem;">No bangers yet nigga, channel ded af 💀🙏 Upload sumthin</p>';
-        }
-
-        // ALL VIDEOS BATCH (latest to oldest)
-        console.log("Fetching all videos batch...");
-        const fullSearchRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&order=date&type=video&key=${API_KEY}`);
-        if (!fullSearchRes.ok) throw new Error(`Full search failed: ${fullSearchRes.status}`);
-        const fullData = await fullSearchRes.json();
-        const allItems = fullData.items || [];
-        const grid = document.getElementById('videosGrid');
-        grid.innerHTML = '';
-
-        const videoIds = allItems.map(item => item.id.videoId).join(',');
-        let vidStatsMap = {};
-        if (videoIds) {
-          const batchStatsRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${API_KEY}`);
-          if (!batchStatsRes.ok) throw new Error(`Batch stats failed: ${batchStatsRes.status}`);
-          const batchData = await batchStatsRes.json();
-          batchData.items.forEach(item => vidStatsMap[item.id] = item.statistics);
-        }
-
-        const initialCount = 12;
-        let shown = 0;
-
-        function showNextBatch() {
-          const end = Math.min(shown + initialCount, allItems.length);
-          for(let i=shown; i<end; i++) {
-            const item = allItems[i];
-            const vId = item.id.videoId;
-            const stats = vidStatsMap[vId] || {};
-            const cardDate = new Date(item.snippet.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            const card = document.createElement('div');
-            card.className = 'video-card';
-            card.innerHTML = `
-              <img class="card-thumb" src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" alt="${item.snippet.title}">
-              <div class="card-info">
-                <div class="card-title">${item.snippet.title}</div>
-                <div class="card-meta">
-                  <span>${Number(stats.viewCount || 0).toLocaleString()} views</span>
-                  <span>${Number(stats.likeCount || 0).toLocaleString()} likes</span>
-                  <span>${Number(stats.commentCount || 0).toLocaleString()} comments</span>
-                  <span>${cardDate}</span>
-                </div>
-              </div>
-            `;
-            grid.appendChild(card);
-            setTimeout(() => card.classList.add('visible'), 100 * (i - shown));
+        if (initial) {
+          // LATEST VID
+          const sr = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=1&order=date&type=video&key=${API_KEY}`);
+          const sd = await sr.json();
+          if (sd.items?.length) {
+            const lv = sd.items[0];
+            const vid = lv.id.videoId;
+            document.getElementById('thumb').src = `https://img.youtube.com/vi/${vid}/maxresdefault.jpg`;
+            document.getElementById('title').textContent = lv.snippet.title;
+            const vr = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${vid}&key=${API_KEY}`);
+            const vd = await vr.json();
+            const vs = vd.items?.[0]?.statistics || {};
+            const pd = new Date(lv.snippet.publishedAt).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+            document.getElementById('vidstats').innerHTML = `<span>${Number(vs.viewCount||0).toLocaleString()} views</span><span>${Number(vs.likeCount||0).toLocaleString()} likes</span><span>${Number(vs.commentCount||0).toLocaleString()} comments</span><span>${pd}</span>`;
           }
-          shown = end;
-          const showMoreBtn = document.getElementById('showMore');
-          if (shown < allItems.length) showMoreBtn.style.display = 'inline-block';
-          else showMoreBtn.style.display = 'none';
+
+          // TOP 3
+          const pr = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=3&order=viewCount&type=video&key=${API_KEY}`);
+          const pd = await pr.json();
+          const pi = pd.items || [];
+          const pids = pi.map(i=>i.id.videoId).join(',');
+          let pstats = {};
+          if (pids) {
+            const psr = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${pids}&key=${API_KEY}`);
+            const psd = await psr.json();
+            psd.items.forEach(it=>pstats[it.id]=it.statistics);
+          }
+          const pg = document.getElementById('popularGrid');
+          pg.innerHTML = '';
+          pi.forEach((it,ix)=>{
+            const vid = it.id.videoId;
+            const st = pstats[vid]||{};
+            const d = new Date(it.snippet.publishedAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+            const c = document.createElement('div');
+            c.className = 'video-card';
+            c.innerHTML = `<img class="card-thumb" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="${it.snippet.title}">
+              <div class="card-info">
+                <div class="card-title">#${ix+1} ${it.snippet.title}</div>
+                <div class="card-meta">
+                  <span>${Number(st.viewCount||0).toLocaleString()} views 🔥</span>
+                  <span>${Number(st.likeCount||0).toLocaleString()} likes 🤑</span>
+                  <span>${Number(st.commentCount||0).toLocaleString()} comments 😭</span>
+                  <span>${d}</span>
+                </div>
+              </div>`;
+            pg.appendChild(c);
+            setTimeout(()=>c.classList.add('visible'),150*ix);
+          });
+
+          // ALL VIDS
+          const fr = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&order=date&type=video&key=${API_KEY}`);
+          const fd = await fr.json();
+          const ai = fd.items || [];
+          const aids = ai.map(i=>i.id.videoId).join(',');
+          let astats = {};
+          if (aids) {
+            const asr = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${aids}&key=${API_KEY}`);
+            const asd = await asr.json();
+            asd.items.forEach(it=>astats[it.id]=it.statistics);
+          }
+          const vg = document.getElementById('videosGrid');
+          vg.innerHTML = '';
+          shown = 0;
+          showNextBatch(ai, astats, vg);
+          document.getElementById('showMore').onclick = () => showNextBatch(ai, astats, vg);
         }
-
-        showNextBatch();
-        document.getElementById('showMore').addEventListener('click', showNextBatch);
-
-        console.log("ALL DATA LOADED SUCCESS NIGGA 🔥😎");
-
-      } catch (err) {
-        console.error("FETCH FUCKED UP:", err.message);
-        document.getElementById('errorMsg').textContent = `API fucked: ${err.message} – fix ur key/ID u bozo`;
-      }
+      } catch(e) { console.error(e); if(initial) document.getElementById('errorMsg').textContent = `API fucked: ${e.message}`; }
     }
-    fetchLiveStats();
+
+    fetchLiveStats(true);
+    setInterval(()=>fetchLiveStats(false),15000);
 
     const nav = document.getElementById('island');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 140);
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', function(e) {
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 140));
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', e => {
         e.preventDefault();
-        const text = this.textContent.trim().toLowerCase();
-        let targetElement;
-        if (text === 'home') targetElement = document.body;
-        else if (text === 'videos') targetElement = document.getElementById('videosSection');
-        if (targetElement) {
-          const yOffset = -120;
-          const y = targetElement.getBoundingClientRect().top + window.scrollY + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        } else {
-          console.log("no target u blind bitch");
-        }
+        const t = a.textContent.trim().toLowerCase();
+        let target = t==='home' ? document.body : t==='videos' ? document.getElementById('videosSection') : null;
+        if (target) window.scrollTo({top: target.getBoundingClientRect().top + window.scrollY - 120, behavior:'smooth'});
       });
     });
-
+    const tt = document.getElementById('toTop');
+    window.addEventListener('scroll', () => tt.classList.toggle('show', window.scrollY > 400));
   </script>
 </body>
 
